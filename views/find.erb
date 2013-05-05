@@ -1,0 +1,47 @@
+<%
+if @tracks.first 
+  rowvariable = "10" 
+else 
+  rowvariable = "50" 
+end
+%>
+
+<form action="/find" method="get">
+	<textarea name="search" rows="<%=rowvariable%>" cols="70"><%=@query%></textarea>
+	<br />
+	<input type="submit" value="submit" />
+</form>
+
+<% if @actual_tracks %>
+<div class="instructions">
+Create a new playlist in Spotify and drag or copy/paste these track ids into it:
+</div>
+<br />
+<textarea rows="15" cols="70"><%=@actual_tracks.join("\n")%></textarea>
+<br />
+<iframe 
+  src="https://embed.spotify.com/?uri=spotify:trackset:My PlayList:<%= @track_ids %>" 
+  allowtransparency="true" 
+  frameborder="0">
+</iframe>
+<% end %>
+
+<br />
+<br />
+<% 
+@tracks.each do |track| 
+if track.is_a? String
+%>
+<div class="notfound">
+  <%= track %>
+</div>
+<% else %>
+  <%="track: " + track.name + " - album: " + track.album.name + " - artist: " + track.artist.name + "<br />"%>
+<% end %>
+<% end %>
+
+<!--
+<% if @tracks %>
+  <%= (@tracks.first.methods - Object.methods).sort.join("<br />") %>
+<% end %>
+-->
